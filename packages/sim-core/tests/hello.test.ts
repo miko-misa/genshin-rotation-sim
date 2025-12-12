@@ -1,9 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from 'vitest';
 
-describe("hello output", () => {
-  it("prints Hello, world", () => {
-    const msg = "Hello, world";
+describe('hello output', () => {
+  it('prints Hello, world', () => {
+    const msg = 'Hello, world';
     console.log(msg);
-    expect(msg).toBe("Hello, world");
+    expect(msg).toBe('Hello, world');
   });
 });
