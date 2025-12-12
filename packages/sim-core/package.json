@@ -1,0 +1,31 @@
+{
+  "name": "@genshin-rotation-sim/sim-core",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "lint": "pnpm --workspace-root exec eslint packages/sim-core",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.17.1",
+  "devDependencies": {
+    "typescript": "~5.9.3",
+    "vitest": "^4.0.15"
+  }
+}

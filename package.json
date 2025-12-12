@@ -1,0 +1,41 @@
+{
+  "name": "genshin-rotation-sim",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.17.1",
+  "engines": {
+    "node": ">=18 <23",
+    "pnpm": ">=10 <11"
+  },
+  "private": true,
+  "scripts": {
+    "prepare": "husky install",
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm --filter @genshin-rotation-sim/sim-core build && pnpm --filter web build",
+    "test": "pnpm --recursive test",
+    "test:core": "pnpm --filter @genshin-rotation-sim/sim-core test",
+    "test:core:watch": "pnpm --filter @genshin-rotation-sim/sim-core test -- --watch",
+    "lint": "pnpm --recursive lint",
+    "lint:core": "pnpm --filter @genshin-rotation-sim/sim-core lint",
+    "lint:web": "pnpm --filter web lint"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "husky": "^9.1.7",
+    "globals": "^16.5.0",
+    "typescript-eslint": "^8.46.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "vite": "npm:rolldown-vite@7.2.5"
+    }
+  }
+}
