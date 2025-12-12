@@ -32,13 +32,15 @@
 - sim-core の ESLint: `pnpm lint:core`
 - sim-core の型チェック: `pnpm --filter @genshin-rotation-sim/sim-core typecheck`
 - web の ESLint: `pnpm lint:web`
+- フォーマット確認/整形: `pnpm format` / `pnpm format:fix`
 
 ## 開発フロー
 1) コアのロジックを `packages/sim-core/src` に実装し、Vitest でテストを追加 (`packages/sim-core/tests` など)。
 2) Web UI からは `import { ... } from "@genshin-rotation-sim/sim-core";` でコアを利用できます（Vite の alias 設定済み）。
 3) `pnpm dev` でフロントの動作を確認。必要に応じて `pnpm test:core:watch` を並行で走らせてください。Lint は共通の ESLint 設定（flat config）で web/sim ともに実行できます。
-4) コミット時は Conventional Commits に従ってください（例: `feat: add rotation calc`）。`.husky/commit-msg` の commitlint が動きます。`pnpm run prepare`などを行なっていれば自動でセットアップされ、コミット時に自動でチェックされます。
+4) コミット時は Conventional Commits に従ってください（例: `feat: add rotation calc`）。`.husky/commit-msg` の commitlint が動きます。`pnpm run prepare` などを行なっていれば自動でセットアップされ、コミット時に自動でチェックされます。
 5) PR 前に `pnpm lint` と `pnpm test`（必要なら `pnpm build`）を通すことを推奨します。
+6) フォーマットは Prettier を使用しています。`pnpm format:fix` で整形、`pnpm format` で差分確認ができます。ESLint では `eslint-config-prettier` を最後に読み込み、フォーマット系ルールを無効化しています。
 
 ## ビルド/テストの仕組み
 - `pnpm build` は `@genshin-rotation-sim/sim-core` を先に `tsc -b` でビルドし、その後 Web を `tsc -b && vite build` します。
