@@ -4,7 +4,7 @@ import { ArtifactSlot } from '../src/data/types';
 import { EquippedArtifact } from '../src/entities/artifacts/Artifact';
 import { Input, solveArtifact4Substats5Star } from '../src/entities/artifacts/SolveArtifactsGrow';
 import { calcBaseStatAtLevel } from '../src/entities/characters/Character';
-import Bennett from '../src/entities/characters/bennett';
+import Bennett from '../src/entities/characters/Bennett';
 import SapwoodBlade from '../src/entities/weapons/SapwoodBlade';
 import { calcBaseWeaponStatAtLevel } from '../src/entities/weapons/Weapon';
 import { printStats } from '../src/stat/CharacterStats';
