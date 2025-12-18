@@ -1,65 +1,29 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 
-import './App.css';
+import type React from "react";
 
-type Task = {
-  id: number;
-  label: string;
-  done: boolean;
-};
-
-const initialTasks: Task[] = [
-  { id: 1, label: 'pnpm install / pnpm dev を試す', done: false },
-  { id: 2, label: 'App.tsx を編集して保存→HMR を体験', done: false },
-  { id: 3, label: 'useState で状態を持つコンポーネントを作る', done: false },
-  { id: 4, label: 'useEffect でデータ取得を試す', done: false },
-  { id: 5, label: 'Tailwind で簡単なレイアウトを組む', done: false },
-];
+const Card: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="rounded-xl border border-slate-200 bg-gray-200 p-4 shadow-sm text-gray-900">
+    {children}
+  </div>
+);
 
 function App() {
-  const [tasks, setTasks] = useState<Task[]>(initialTasks);
-
-  const toggleTask = (id: number) => {
-    setTasks((prev) =>
-      prev.map((task) => (task.id === id ? { ...task, done: !task.done } : task))
-    );
-  };
-
-  const completedCount = tasks.filter((task) => task.done).length;
-
   return (
-    <div className="page">
-      <header className="page__header">
+    <div className="flex min-h-screen w-screen flex-col items-center justify-center gap-6 text-center px-4">
+      <header className="flex flex-col items-center gap-2">
         <div>
-          <p className="eyebrow">Learning checklist</p>
-          <h1 className="text-white font-bold">React やることリスト</h1>
-        </div>
-        <div className="summary">
-          <span className="summary__label">進捗</span>
-          <div className="summary__value">
-            {completedCount} / {tasks.length}
-          </div>
+          <h1 className="text-gray-100 text-2xl font-bold">React TailWindCSS</h1>
         </div>
       </header>
 
-      <section className="card">
-        <ul className="tasks">
-          {tasks.map((task) => (
-            <li key={task.id} className="tasks__item">
-              <label className="tasks__label">
-                <input
-                  type="checkbox"
-                  checked={task.done}
-                  onChange={() => toggleTask(task.id)}
-                />
-                <span className={task.done ? 'tasks__text tasks__text--done' : 'tasks__text'}>
-                  {task.label}
-                </span>
-              </label>
-            </li>
-          ))}
-        </ul>
+      <section className="page__content w-full max-w-xl">
+        <Card>内容</Card>
       </section>
+
+      <footer className="page__footer">
+        
+      </footer>
     </div>
   );
 }
