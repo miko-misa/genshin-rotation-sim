@@ -28,7 +28,7 @@ type CodeBlockProps = {
 };
 
 const CodeBlock: React.FC<CodeBlockProps> = ({ title, language, code }) => (
-  <div className="w-full max-w-3xl overflow-hidden rounded-xl border border-slate-200 bg-slate-900 text-sm text-slate-100 shadow-sm">
+  <div className="w-full max-w-3xl overflow-hidden rounded-xl border border-slate-200 bg-slate-900 text-sm text-slate-100 shadow-sm mb-2">
     {title && (
       <div className="flex items-center justify-between border-b border-slate-700/80 bg-slate-800 px-4 py-2 text-xs tracking-wide text-slate-300 uppercase">
         <span>{title}</span>
@@ -97,6 +97,35 @@ const Card: React.FC<CardProps> = ({ title, children }) => {
             code={`
 import { Highlight, themes } from 'prism-react-renderer';`}
           />
+          web/package.jsonに依存関係を追加する必要がある
+          <CodeBlock
+            language="json"
+            code={`
+"dependencies": {
+  "prism-react-renderer": "^1.3.5",
+}`}
+          />
+          使用したコマンド(/webディレクトリで実行)
+          <CodeBlock
+            language='bash'
+            code={`
+              pnpm add prism-react-renderer`}
+          />
+        </Card>
+        <Card title='inputから内容を取得・表示する方法'>
+          <input type="text" id="input-example" className="border border-slate-300 rounded-md px-2 py-1 mr-2" placeholder="ここに入力してください" />
+          <button
+            onClick={() => {
+              const input = (document.getElementById('input-example') as HTMLInputElement).value;
+              const displayArea = document.getElementById('display-area');
+              if (displayArea) {
+                displayArea.textContent = `入力された内容: ${input}`; 
+              }}
+            }
+          >
+            表示
+          </button>
+          <p id="display-area" className="mt-2 text-gray-800"></p>
         </Card>
       </section>
 
