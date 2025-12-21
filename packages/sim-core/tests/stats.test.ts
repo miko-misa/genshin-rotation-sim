@@ -146,7 +146,7 @@ test('artifacts solver', () => {
   // console.log(JSON.stringify(sols.slice(0, 1), null, 2)); // show first 10
 });
 
-test('bcharacter stats print', () => {
+test('character stats print', () => {
   const sapwoodBlade = new SapwoodBlade(90);
   const artifacts = [
     {
