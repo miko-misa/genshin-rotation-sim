@@ -9,6 +9,42 @@ import SapwoodBlade from '../src/entities/weapons/SapwoodBlade';
 import { calcBaseWeaponStatAtLevel } from '../src/entities/weapons/Weapon';
 import { printStats } from '../src/stat/CharacterStats';
 
+interface CustomMatchers<R = unknown> {
+  toBeDifferenceLessThan(expected: number, range: number): R;
+}
+
+declare module 'vitest' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/no-explicit-any
+  interface Assertion<T = any> extends CustomMatchers<T> {}
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  interface AsymmetricMatchersContaining extends CustomMatchers {}
+}
+
+expect.extend({
+  toBeDifferenceLessThan(received: number, expected: number, range: number) {
+    const { isNot } = this;
+
+    // 差分の絶対値を計算
+    const diff = Math.abs(received - expected);
+
+    // 判定ロジック: 差が指定範囲(range)より小さいか
+    const pass = diff < range;
+
+    return {
+      pass,
+      // エラー時に表示されるメッセージ
+      message: () => {
+        // expect(x).not.toBeDifferenceLessThan(...) の場合と
+        // expect(x).toBeDifferenceLessThan(...) の場合でメッセージを出し分ける
+        return isNot
+          ? `Expected value to NOT be within difference of ${range} from ${expected}, but difference was ${diff}`
+          : `Expected value to be within difference of ${range} from ${expected}, but difference was ${diff}`;
+      },
+    };
+  },
+});
+
 describe('calculate stats', () => {
   it('character base attack', () => {
     const stats = calcBaseStatAtLevel('Bennett', 80);
@@ -89,7 +125,7 @@ describe('calculate stats', () => {
       },
     ] as const satisfies EquippedArtifact[];
     const bennett = new Bennett(86, sapwoodBlade, artifacts);
-    expect(Math.round(bennett.stats.attack.total)).toBeCloseTo(1751, -1);
+    expect(bennett.stats.attack.total).toBeDifferenceLessThan(1751, 1);
   });
 });
 
