@@ -18,21 +18,21 @@ export default abstract class Character {
   stats: CharacterStats;
 
   constructor(
-    public name: string,
+    public key: string,
     public level: CharacterLevel,
     public equippedWeapon: Weapon,
     public equippedArtifacts: EquippedArtifact[] = []
   ) {
-    const characterData = CHARACTERS[this.name];
+    const characterData = CHARACTERS[this.key];
     if (!characterData) {
-      throw new Error(`Character '${this.name}' not found.`);
+      throw new Error(`Character '${this.key}' not found.`);
     }
     if (equippedWeapon.type !== characterData.weaponType) {
       throw new Error(
         `Equipped weapon type '${equippedWeapon.type}' does not match character's weapon type '${characterData.weaponType}'.`
       );
     }
-    this.stats = calcBaseStatAtLevel(this.name, this.level);
+    this.stats = calcBaseStatAtLevel(this.key, this.level);
     this.element = characterData.element;
     this.rarity = characterData.rarity;
     this.weaponType = characterData.weaponType;
@@ -60,7 +60,7 @@ export default abstract class Character {
 }
 
 export type CharacterData = {
-  name: string;
+  displayName: string;
   element: Element;
   rarity: CharacterRarity;
   weaponType: WeaponType;
@@ -87,10 +87,10 @@ function getLevelMultiplier(level: number, rarity: CharacterRarity) {
   return Math.round(multiplier * 1000) / 1000;
 }
 
-export function calcBaseStatAtLevel(name: string, level: CharacterLevel): CharacterStats {
-  const characterData = CHARACTERS[name];
+export function calcBaseStatAtLevel(characterKey: string, level: CharacterLevel): CharacterStats {
+  const characterData = CHARACTERS[characterKey];
   if (!characterData) {
-    throw new Error(`Character '${name}' not found.`);
+    throw new Error(`Character '${characterKey}' not found.`);
   }
 
   const {
@@ -100,15 +100,19 @@ export function calcBaseStatAtLevel(name: string, level: CharacterLevel): Charac
   const { levelNum, ascension } = getLevelAndAscension(level);
 
   // レベル乗数の取得
-  let multipliers = { hp: 0, attack: 0, defense: 0 };
+  let multipliers: { hp: number; attack: number; defense: number };
   if (levelNum <= 90) {
     const m = getLevelMultiplier(levelNum, rarity);
     multipliers = { hp: m, attack: m, defense: m };
   } else {
     const overLevel = OVER_LEVEL_MULTIPLIER[rarity]?.[levelNum];
-    // 定義がない場合は計算値を使用
-    const m = overLevel ? 0 : getLevelMultiplier(levelNum, rarity);
-    multipliers = overLevel || { hp: m, attack: m, defense: m };
+    // 定義がない場合はエラー
+    if (!overLevel) {
+      throw new Error(
+        `Over level multipliers not defined for character rarity ${rarity} at level ${levelNum}.`
+      );
+    }
+    multipliers = overLevel;
   }
 
   const ascMultiplier = ASCENSION_MULTIPLIERS[ascension] || 0;
@@ -126,7 +130,7 @@ export function calcBaseStatAtLevel(name: string, level: CharacterLevel): Charac
   // 突破ステータスを反映
   const key = characterData.bonusStat;
   if (!key) {
-    throw new Error(`bonusStat is not defined for character '${characterData.name}'.`);
+    throw new Error(`bonusStat is not defined for character '${characterData.displayName}'.`);
   }
   stat[key].add(createBonusStatForKey(key, getAscensionBonusStat(key, rarity, ascension)));
   return stat;

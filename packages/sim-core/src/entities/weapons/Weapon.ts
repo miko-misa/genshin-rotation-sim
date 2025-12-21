@@ -6,22 +6,22 @@ import { getLevelAndAscension } from '../../utils';
 
 export abstract class Weapon {
   type: WeaponType;
-  name: string;
+  key: string;
   baseAttack: number;
   secondaryStat: { stat: CharacterStatKey; value: number };
   rarity: Rarity;
   abstract applyPassiveModifiers(newStats: CharacterStats): void;
   abstract applyEffects(bus: EventBus): void;
 
-  constructor(weaponName: string, level: WeaponLevel) {
-    this.name = weaponName;
-    const weaponInfo = WEAPONS[weaponName];
+  constructor(key: string, level: WeaponLevel) {
+    this.key = key;
+    const weaponInfo = WEAPONS[key];
     if (!weaponInfo) {
-      throw new Error(`Unknown weapon name: ${weaponName}`);
+      throw new Error(`Unknown weapon key: ${key}`);
     }
     this.type = weaponInfo.type;
     this.rarity = weaponInfo.rarity;
-    const { baseAttack, secondary } = calcBaseWeaponStatAtLevel(weaponName, level);
+    const { baseAttack, secondary } = calcBaseWeaponStatAtLevel(key, level);
     this.baseAttack = baseAttack;
     this.secondaryStat = {
       stat: secondary.stat,
@@ -188,7 +188,7 @@ const WEAPON_ASCENSION_VALUE_BY_RARITY: Readonly<Record<Rarity, readonly number[
 };
 
 export type WeaponData = {
-  name: string;
+  displayName: string;
   type: WeaponType;
   baseAttack: number;
   baseAttackCurveId: WeaponCurveId;
@@ -203,11 +203,11 @@ export type WeaponData = {
 const WEAPONS = weaponData as unknown as Record<string, WeaponData>;
 
 export function calcBaseWeaponStatAtLevel(
-  name: string,
+  key: string,
   level: WeaponLevel
 ): { baseAttack: number; secondary: { stat: CharacterStatKey; value: number } } {
-  const weaponData = WEAPONS[name];
-  if (!weaponData) throw new Error(`Unknown weapon name: ${name}`);
+  const weaponData = WEAPONS[key];
+  if (!weaponData) throw new Error(`Unknown weapon key: ${key}`);
 
   const curve = getWeaponLevelMultiplierCurve(weaponData.baseAttackCurveId);
   const { levelNum, ascension } = getLevelAndAscension(level);
@@ -216,6 +216,9 @@ export function calcBaseWeaponStatAtLevel(
     WEAPON_ASCENSION_VALUE_BY_RARITY[weaponData.ascensionRarity][ascension] || 0;
   const secondaryStat =
     weaponData.secondaryStat.base * WEAPON_SECONDARY_MULTIPLIER[Math.floor(levelNum / 5) * 5];
+  if (!secondaryStat) {
+    throw new Error(`No secondary stat found for weapon ${key} at level ${level}`);
+  }
   return {
     baseAttack: weaponData.baseAttack * multiplier + ascensionBonus,
     secondary: {
