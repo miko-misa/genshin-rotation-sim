@@ -1,6 +1,6 @@
 {
   "SkywardBlade": {
-    "name": "Skyward Blade",
+    "displayName": "Skyward Blade",
     "type": "Sword",
     "baseAttack": 45.9364,
     "baseAttackCurveId": "MAIN_5_T2",
@@ -12,7 +12,7 @@
     }
   },
   "SapwoodBlade": {
-    "name": "Sapwood Blade",
+    "displayName": "Sapwood Blade",
     "type": "Sword",
     "baseAttack": 43.7349,
     "baseAttackCurveId": "MAIN_4_T3",
