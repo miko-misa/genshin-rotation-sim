@@ -82,23 +82,31 @@ const ROLL_5STAR: Record<Substat, number[]> = {
   critDmg: [5.44, 6.22, 6.99, 7.77],
 };
 
+/**
+ * Small epsilon value used to guard against floating-point representation issues.
+ * Value chosen to be small enough to not affect rounding behavior (< 0.0001)
+ * while large enough to handle typical IEEE 754 double-precision errors (~1e-15).
+ * This ensures that values like 0.5 or 1.5 (which may be represented as 0.499...9
+ * or 1.499...9 in binary) round correctly in half-up operations.
+ */
+const FLOAT_EPSILON = 1e-12;
+
 // ----- rounding helpers (half-up) -----
 function roundHalfUp(x: number, decimals: number): number {
   const f = 10 ** decimals;
-  // tiny epsilon to guard against binary float representation issues
-  return Math.floor(x * f + 0.5 + 1e-12) / f;
+  return Math.floor(x * f + 0.5 + FLOAT_EPSILON) / f;
 }
 
 // Convert displayed value -> allowed internal range (scaled by 100) inclusive: [lo, hi]
 function internalRange100(displayed: number, decimals: 0 | 1): [number, number] {
   if (decimals === 1) {
-    const tenth = Math.round(displayed * 10 + 1e-12); // e.g. 11.5 -> 115
+    const tenth = Math.round(displayed * 10 + FLOAT_EPSILON); // e.g. 11.5 -> 115
     const center = tenth * 10; // back to hundredths
     // half-up to 0.1 means internal in [d-0.05, d+0.05)
     // in hundredths: [center-5, center+4] inclusive
     return [center - 5, center + 4];
   } else {
-    const integer = Math.round(displayed + 1e-12);
+    const integer = Math.round(displayed + FLOAT_EPSILON);
     const center = integer * 100;
     // half-up to integer means internal in [D-0.5, D+0.5)
     // in hundredths: [center-50, center+49] inclusive
