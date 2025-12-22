@@ -28,7 +28,7 @@ type CodeBlockProps = {
 };
 
 const CodeBlock: React.FC<CodeBlockProps> = ({ title, language, code }) => (
-  <div className="w-full max-w-3xl overflow-hidden rounded-xl border border-slate-200 bg-slate-900 text-sm text-slate-100 shadow-sm mb-2">
+  <div className="mb-2 w-full max-w-3xl overflow-hidden rounded-xl border border-slate-200 bg-slate-900 text-sm text-slate-100 shadow-sm">
     {title && (
       <div className="flex items-center justify-between border-b border-slate-700/80 bg-slate-800 px-4 py-2 text-xs tracking-wide text-slate-300 uppercase">
         <span>{title}</span>
@@ -107,41 +107,47 @@ import { Highlight, themes } from 'prism-react-renderer';`}
           />
           使用したコマンド(/webディレクトリで実行)
           <CodeBlock
-            language='bash'
+            language="bash"
             code={`
               pnpm add prism-react-renderer`}
           />
         </Card>
-        <Card title='inputから内容を取得・表示する方法'>
-          <input type="text" id="input-example" className="border border-slate-300 rounded-md px-2 py-1 mr-2" placeholder="ここに入力してください" />
+        <Card title="inputから内容を取得・表示する方法">
+          <input
+            type="text"
+            id="input-example"
+            className="mr-2 rounded-md border border-slate-300 px-2 py-1"
+            placeholder="ここに入力してください"
+          />
           <button
             onClick={() => {
               const input = (document.getElementById('input-example') as HTMLInputElement).value;
               const displayArea = document.getElementById('display-area');
               if (displayArea) {
-                displayArea.textContent = `入力された内容: ${input}`; 
-              }}
-            }
-          >
+                displayArea.textContent = `入力された内容: ${input}`;
+              }
+            }}>
             表示
           </button>
           <p id="display-area" className="mt-2 text-gray-800"></p>
         </Card>
-        <Card title='ページ遷移の実装'>
-          <p id="display-area" className="mt-2 text-gray-800">ルーティングを用いて実装</p>
-          <CodeBlock language='bash' code={
-            `pnpm add react-router-dom`
-          }
-          />
-          <a href="/about" className="text-blue-600 underline">Aboutへ移動</a>
+        <Card title="ページ遷移の実装">
+          <p id="display-area" className="mt-2 text-gray-800">
+            ルーティングを用いて実装
+          </p>
+          <CodeBlock language="bash" code={`pnpm add react-router-dom`} />
+          <a href="/about" className="text-blue-600 underline">
+            Aboutへ移動
+          </a>
         </Card>
-        <Card title='DnDの実装'>
-          <p id="display-area" className="mt-2 text-gray-800">ライブラリdnd-kitを使用</p>
-          <CodeBlock language='bash' code={
-            `pnpm add @dnd-kit/core @dnd-kit/sortable`
-          }
-          />
-          <a href="/drag-drop" className="text-blue-600 underline">ドラッグアンドドロップのページへ移動</a>
+        <Card title="DnDの実装">
+          <p id="display-area" className="mt-2 text-gray-800">
+            ライブラリdnd-kitを使用
+          </p>
+          <CodeBlock language="bash" code={`pnpm add @dnd-kit/core @dnd-kit/sortable`} />
+          <a href="/drag-drop" className="text-blue-600 underline">
+            ドラッグアンドドロップのページへ移動
+          </a>
         </Card>
       </section>
 

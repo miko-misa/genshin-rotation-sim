@@ -29,7 +29,9 @@ function Home() {
       </header>
 
       <section className="page__content w-full max-w-xl">
-        <Card title="元に戻る"><a href="/">ホームに戻る</a></Card>
+        <Card title="元に戻る">
+          <a href="/">ホームに戻る</a>
+        </Card>
       </section>
 
       <footer className="page__footer"></footer>
