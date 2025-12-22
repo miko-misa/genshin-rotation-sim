@@ -7,7 +7,7 @@ import { Weapon } from './Weapon';
 
 export class SkywardBlade extends Weapon {
   constructor(level: WeaponLevel) {
-    super('Skyward Blade', level);
+    super('SkywardBlade', level);
   }
   applyPassiveModifiers(newStats: CharacterStats): void {
     // CRIT Rate +4.0%
@@ -15,5 +15,7 @@ export class SkywardBlade extends Weapon {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  applyEffects(bus: EventBus): void {}
+  applyEffects(_bus: EventBus): void {
+    // TODO: Implement Skyward Blade effects
+  }
 }
