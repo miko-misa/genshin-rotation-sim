@@ -10,7 +10,7 @@ import { calcBaseWeaponStatAtLevel } from '../src/entities/weapons/Weapon';
 import { printStats } from '../src/stat/CharacterStats';
 
 interface CustomMatchers<R = unknown> {
-  toBeDifferenceLessThan(expected: number, range: number): R;
+  toBeWithinRange(expected: number, range: number): R;
 }
 
 declare module 'vitest' {
@@ -22,7 +22,7 @@ declare module 'vitest' {
 }
 
 expect.extend({
-  toBeDifferenceLessThan(received: number, expected: number, range: number) {
+  toBeWithinRange(received: number, expected: number, range: number) {
     const { isNot } = this;
 
     // 差分の絶対値を計算
@@ -125,7 +125,7 @@ describe('calculate stats', () => {
       },
     ] as const satisfies EquippedArtifact[];
     const bennett = new Bennett(86, sapwoodBlade, artifacts);
-    expect(bennett.stats.attack.total).toBeDifferenceLessThan(1751, 1);
+    expect(bennett.stats.attack.total).toBeWithinRange(1751, 1);
   });
 });
 
