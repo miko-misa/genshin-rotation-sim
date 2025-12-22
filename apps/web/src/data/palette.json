@@ -1,0 +1,21 @@
+{
+  "items": [
+    { "id": "a", "label": "ベネット", "pattern": "sword" },
+    { "id": "b", "label": "フィッシュル", "pattern": "bow" },
+    { "id": "c", "label": "ヴァレサ", "pattern": "catalyst" }
+  ],
+  "patterns": {
+    "sword": [
+      { "id": "x1", "label": "天空の刃" },
+      { "id": "x2", "label": "原木刀" }
+    ],
+    "catalyst": [
+      { "id": "y1", "label": "四風原典" },
+      { "id": "y2", "label": "ヴィヴィットハート" }
+    ],
+    "bow": [
+      { "id": "z1", "label": "絶弦" },
+      { "id": "z2", "label": "終焉を嘆く詩" }
+    ]
+  }
+}
