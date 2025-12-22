@@ -214,11 +214,12 @@ export function calcBaseWeaponStatAtLevel(
   const multiplier = curve[levelNum];
   const ascensionBonus =
     WEAPON_ASCENSION_VALUE_BY_RARITY[weaponData.ascensionRarity][ascension] || 0;
-  const secondaryStat =
-    weaponData.secondaryStat.base * WEAPON_SECONDARY_MULTIPLIER[Math.floor(levelNum / 5) * 5];
-  if (!secondaryStat) {
+  const secondaryMultiplierIndex = Math.floor(levelNum / 5) * 5;
+  const secondaryMultiplier = WEAPON_SECONDARY_MULTIPLIER[secondaryMultiplierIndex];
+  if (!secondaryMultiplier) {
     throw new Error(`No secondary stat found for weapon ${key} at level ${level}`);
   }
+  const secondaryStat = weaponData.secondaryStat.base * secondaryMultiplier;
   return {
     baseAttack: weaponData.baseAttack * multiplier + ascensionBonus,
     secondary: {
