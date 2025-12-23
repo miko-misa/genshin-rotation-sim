@@ -35,11 +35,11 @@ expect.extend({
       pass,
       // エラー時に表示されるメッセージ
       message: () => {
-        // expect(x).not.toBeDifferenceLessThan(...) の場合と
-        // expect(x).toBeDifferenceLessThan(...) の場合でメッセージを出し分ける
+        // expect(x).not.toBeWithinRange(...) の場合と
+        // expect(x).toBeWithinRange(...) の場合でメッセージを出し分ける
         return isNot
-          ? `Expected value to NOT be within difference of ${range} from ${expected}, but difference was ${diff}`
-          : `Expected value to be within difference of ${range} from ${expected}, but difference was ${diff}`;
+          ? `Expected value to NOT satisfy toBeWithinRange: difference ${diff} was within ${range} of ${expected}`
+          : `Expected value to satisfy toBeWithinRange: difference ${diff} was not within ${range} of ${expected}`;
       },
     };
   },
