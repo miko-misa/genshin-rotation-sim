@@ -145,7 +145,7 @@ import { Highlight, themes } from 'prism-react-renderer';`}
             ライブラリdnd-kitを使用
           </p>
           <CodeBlock language="bash" code={`pnpm add @dnd-kit/core @dnd-kit/sortable`} />
-          <a href="/drag-drop" className="text-blue-600 underline">
+          <a href="/dragdrop" className="text-blue-600 underline">
             ドラッグアンドドロップのページへ移動
           </a>
         </Card>

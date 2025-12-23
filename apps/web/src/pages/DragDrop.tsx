@@ -27,7 +27,7 @@ const Draggable: React.FC<DraggableProps> = ({ id, data, children }) => {
       }}
       {...attributes}
       {...listeners}
-      className="cursor-grab touch-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm select-none">
+      className="cursor-grab rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm select-none touch-none">
       {children}
     </div>
   );
