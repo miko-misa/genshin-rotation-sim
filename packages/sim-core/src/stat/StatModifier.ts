@@ -19,12 +19,12 @@ export class FixedStatModifier extends StatModifier {
     public startTime: number,
     public endTime: number,
     public targetKey: CharacterStatKey,
-    public inscrease: Stat
+    public increase: Stat
   ) {
     super();
   }
 
   modify(newStat: CharacterStats): void {
-    newStat[this.targetKey].add(this.inscrease);
+    newStat[this.targetKey].add(this.increase);
   }
 }
