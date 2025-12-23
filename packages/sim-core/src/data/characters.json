@@ -1,0 +1,21 @@
+{
+  "Bennett": {
+    "displayName": "Bennett",
+    "element": "Pyro",
+    "rarity": 4,
+    "weaponType": "Sword",
+    "bonusStat": "energyRecharge",
+    "stats": {
+      "base": {
+        "hp": 1039.4418,
+        "attack": 16.0272,
+        "defense": 64.66425
+      },
+      "maxAsc": {
+        "hp": 3719.104,
+        "attack": 57.34638,
+        "defense": 231.3675
+      }
+    }
+  }
+}
