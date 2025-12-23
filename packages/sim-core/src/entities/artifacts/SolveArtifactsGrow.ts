@@ -84,10 +84,12 @@ const ROLL_5STAR: Record<Substat, number[]> = {
 
 /**
  * Small epsilon value used to guard against floating-point representation issues.
- * Value chosen to be small enough to not affect rounding behavior (< 0.0001)
- * while large enough to handle typical IEEE 754 double-precision errors (~1e-15).
- * This ensures that values like 0.5 or 1.5 (which may be represented as 0.499...9
- * or 1.499...9 in binary) round correctly in half-up operations.
+ * Chosen to be:
+ * - Small enough to be negligible for our rounding scales (< 0.0001), and
+ * - Large enough to comfortably exceed typical IEEE 754 double-precision noise
+ *   around these magnitudes (~1e-15) with a conservative safety margin.
+ * This helps ensure that values like 0.5 or 1.5 (which may be represented as
+ * 0.499...9 or 1.499...9 in binary) round correctly in half-up operations.
  */
 const FLOAT_EPSILON = 1e-12;
 

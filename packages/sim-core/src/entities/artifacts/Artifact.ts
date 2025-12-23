@@ -1,5 +1,5 @@
 import { ArtifactLevel, ArtifactSlot } from '../../data/types';
-import { CharacterStatKey, CharacterStats } from '../../stat/CharacterStats';
+import { CharacterStatKey, CharacterStats, STAT_KINDS } from '../../stat/CharacterStats';
 
 export abstract class ArtifactSet {
   constructor(public set: string) {}
@@ -97,17 +97,47 @@ export function loadArtifactsStats(
   }
 }
 
+// Artifact側のキーと、CharacterStats側の対象キーの対応表（1箇所で集中管理）。
+// 適用の方法（percent か flat）は STAT_KINDS と組み合わせて決定する。
+type ArtifactAnyStat = ArtifactSubStat | ArtifactMainStat;
+const ARTIFACT_TO_CHARACTER: Readonly<Record<ArtifactAnyStat, CharacterStatKey>> = {
+  // scaling系（平坦/割合の2形態が存在）
+  'hp': 'hp',
+  'hp%': 'hp',
+  'attack': 'attack',
+  'attack%': 'attack',
+  'defense': 'defense',
+  'defense%': 'defense',
+  // additive系（加算のみ）
+  'elementalMastery': 'elementalMastery',
+  'energyRecharge': 'energyRecharge',
+  'critRate': 'critRate',
+  'critDamage': 'critDamage',
+  'healingBonus': 'healingBonus',
+  'physicalBonus': 'physicalBonus',
+  'pyroBonus': 'pyroBonus',
+  'hydroBonus': 'hydroBonus',
+  'electroBonus': 'electroBonus',
+  'cryoBonus': 'cryoBonus',
+  'anemoBonus': 'anemoBonus',
+  'geoBonus': 'geoBonus',
+  'dendroBonus': 'dendroBonus',
+} as const;
+
 function applyStat(
   characterStats: CharacterStats,
   stat: ArtifactSubStat | ArtifactMainStat,
   value: number
 ) {
-  if (stat.endsWith('%')) {
-    const key = stat.slice(0, -1) as CharacterStatKey;
-    characterStats[key].addPercentBonus(value);
+  const target = ARTIFACT_TO_CHARACTER[stat];
+  const kind = STAT_KINDS[target];
+
+  // scaling系かつ、ArtifactのキーがCharacterStatKeyと異なる（=割合形態）場合は%加算
+  if (kind === 'scaling' && stat !== target) {
+    characterStats[target].addPercentBonus(value);
     return;
-  } else {
-    const key = stat as CharacterStatKey;
-    characterStats[key].addFlatBonus(value);
   }
+
+  // それ以外はフラット加算
+  characterStats[target].addFlatBonus(value);
 }
