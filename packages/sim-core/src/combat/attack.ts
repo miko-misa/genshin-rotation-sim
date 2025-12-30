@@ -1,5 +1,6 @@
 import { CharacterStats } from '../stat/CharacterStats';
-import { AttackPayload, HitPayload } from './types';
+import { AttackPayload, HitPayload, RefStatMultiplier } from './types';
+import { Element } from '../data/types.js';
 
 export type Buffs = {
   specialMultiplierPct: number;
@@ -8,23 +9,25 @@ export type Buffs = {
   critRateAdd: number;
   critDamageAdd: number;
   defIgnorePct: number;
+  defShredPct: number;
   resShredPct: number;
   finalMultiplierPct: number;
-  // TODO attackKind specific buffs
+  attackKindBonusPct: number;
 };
 
 export type DamageContext = {
   source: string;
-  element: AttackPayload['element'];
+  level: number;
+  element: Element;
   attackKind: AttackPayload['attackKind'];
-  multiplier: number;
+  multiplier: RefStatMultiplier;
   stats: CharacterStats;
   buffs: Buffs;
-  // TODO reference stat
+  refStat?: string;
 };
 
 export function attack(payload: AttackPayload, stats: CharacterStats): DamageContext[] {
-  const resolvedStats = payload.snapshot === 'snapshot' ? clonnStats(stats) : stats;
+  const resolvedStats = payload.snapshot === 'snapshot' ? cloneStats(stats) : stats;
 
   if (!payload.hits || payload.hits.length === 0) {
     return [
@@ -45,7 +48,7 @@ export function attack(payload: AttackPayload, stats: CharacterStats): DamageCon
   );
 }
 
-function clonnStats(stats: CharacterStats): CharacterStats {
+function cloneStats(stats: CharacterStats): CharacterStats {
   return stats; // TODO: implement deep clone
 }
 
@@ -62,6 +65,7 @@ function makeDamageContext({
     source: payload.source,
     element: hit.element ?? payload.element,
     attackKind: payload.attackKind,
+    level: payload.level,
     multiplier: hit.ratio ?? payload.multiplier,
     stats: stats,
     buffs: {
@@ -71,8 +75,11 @@ function makeDamageContext({
       critRateAdd: 0,
       critDamageAdd: 0,
       defIgnorePct: 0,
+      defShredPct: 0,
       resShredPct: 0,
       finalMultiplierPct: 0,
+      attackKindBonusPct: 0,
     },
+    refStat: payload.refStat,
   };
 }

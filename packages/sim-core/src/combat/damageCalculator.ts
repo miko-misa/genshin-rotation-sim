@@ -1,39 +1,47 @@
 import { DamageContext } from './attack';
+import { CharacterStats } from '../stat/CharacterStats';
+import { RefStatMultiplier } from './types';
+import { Element } from '../data/types.js';
 
-export type ResultDamage = {
+export type PreEnemyDamage = {
   damage: number;
-  element: DamageContext['element'];
-  hits: number; // number of enemies hit by the attack
+  element: Element;
+  defIgnorePct: number;
+  defShredPct: number;
+  resShredPct: number;
+  attackerLevel: number;
 };
 
-export function calculateDamage(dc: DamageContext): ResultDamage {
+
+export function calculateDamage(dc: DamageContext): PreEnemyDamage {
   const { stats, multiplier, buffs } = dc;
 
-  const rawBaseDamage = stats.hp.total * multiplier * (1 + buffs.specialMultiplierPct / 100); // TODO get reference stat from dc
+  
+  const rawBaseDamage = calcRowBase(stats, multiplier, buffs.specialMultiplierPct);
   const baseDamage = rawBaseDamage + buffs.flatAdd;
-  const damageBuffed = baseDamage * (1 + buffs.damageBonusPct / 100);
+  const damageBuffed = baseDamage * (1 + (buffs.damageBonusPct + buffs.attackKindBonusPct) / 100);
   const critExpected =
     damageBuffed *
     (1 +
       ((stats.critRate.total + buffs.critRateAdd) / 100) *
         ((stats.critDamage.total + buffs.critDamageAdd) / 100));
-  const defApplied = calcDefIgnore(critExpected, buffs.defIgnorePct);
-  const resApplied = calcResShred(defApplied, buffs.resShredPct);
-  const finalDamage = resApplied * (1 + buffs.finalMultiplierPct / 100);
+  const finalDamage = critExpected * (1 + buffs.finalMultiplierPct / 100);
 
   return {
     damage: finalDamage,
     element: dc.element,
-    hits: 1, // TODO calculate number of enemies hit by the attack
+    defIgnorePct: buffs.defIgnorePct,
+    defShredPct: buffs.defShredPct,
+    resShredPct: buffs.resShredPct,
+    attackerLevel: dc.level,
   };
 }
 
-function calcDefIgnore(damage: number, defIgnorePct: number): number {
-  // TODO implement defense ignore calculation
-  return damage * (1 - defIgnorePct / 100);
-}
-
-function calcResShred(damage: number, resShredPct: number): number {
-  // TODO implement resistance shred calculation
-  return damage * (1 - resShredPct / 100);
+function calcRowBase(stats: CharacterStats, m: RefStatMultiplier, specialPct: number) {
+  const base =
+    m.Attack * stats.attack.total +
+    m.Defense * stats.defense.total +
+    m.HP * stats.hp.total +
+    m.ElementalMastery * stats.elementalMastery.total;
+  return base * (1 + specialPct / 100);
 }
