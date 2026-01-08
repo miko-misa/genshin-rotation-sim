@@ -1,0 +1,42 @@
+{
+  "Hilichurl": {
+    "displayName": "Hilichurl",
+    "hasWeakPoint": true,
+    "stats": {
+      "baseHP": 13.584,
+      "levelMultiplierType": "Type1",
+      "elementalResistances": {
+        "Pyro": 0.1,
+        "Hydro": 0.1,
+        "Electro": 0.1,
+        "Cryo": 0.1,
+        "Anemo": 0.1,
+        "Geo": 0.1,
+        "Dendro": 0.1,
+        "Physical": 0.1
+      }
+    }
+  },
+  "TaintedWater-SplittingPhantasm": {
+    "displayName": "Tainted Water-Splitting Phantasm",
+    "hasWeakPoint": false,
+    "elements": {
+      "isElemental": true,
+      "element": "Hydro"
+    },
+    "stats": {
+      "baseHP": 67.92,
+      "levelMultiplierType": "Type2",
+      "elementalResistances": {
+        "Pyro": 0.1,
+        "Hydro": 0,
+        "Electro": 0.1,
+        "Cryo": 0.1,
+        "Anemo": 0.1,
+        "Geo": 0.1,
+        "Dendro": 0.1,
+        "Physical": 0.1
+      }
+    }
+  }
+}
